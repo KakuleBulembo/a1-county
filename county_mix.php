@@ -57,4 +57,81 @@ $county_data = "1. Mombasa. – Hassan Ali Joho – ODM,
 
 // @TODO : Your code starts here
 
+$separatedData = explode(",", $county_data);
+$length = count($separatedData);
+$badCharacters = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9","."," ' ");
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NAIROBI STATISTICS</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+
+<body>
+<table>
+    <thead>
+    <tr>
+        <th># </th>
+        <th>Name</th>
+        <th>Governor</th>
+        <th>Party</th>
+        <th>Website</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    $j=1;
+    for($x = 0; $x < $length; $x++) {
+        $getData = explode(" – ",$separatedData[$x]);
+        ?>
+        <tr>
+            <td><?php echo $j++?></td>
+            <td>
+                <?php
+                $cleanString = str_replace($badCharacters, "", $getData[0]);
+                echo $cleanString;?>
+            </td>
+            <td>
+                <?php
+                echo $getData[1];?>
+            </td>
+            <td><?php
+                if(!empty($getData[2])){
+                    if($getData[2] == "WDM K."){
+                        echo "WDM K";
+                    }else{
+                        echo $getData[2];
+                    }
+                }
+                else {
+                    if(strpos($getData[1],"- Jubilee")){
+                        echo "Jubilee";
+                    }
+                    elseif(strpos($getData[1],"- ODM")){
+                        echo "ODM";
+                    }
+                }?></td>
+            <?php
+            $cleanString = str_replace($badCharacters, "", $getData[0]);
+            $link = strtolower(str_replace(' ', '', $cleanString));?>
+            <td><a target="_BLANK"
+                   href="http://<?php echo $link?>.go.ke">http://<?php echo $link;?>.go.ke</a></td>
+        </tr>
+        <?php
+    }
+    ?>
+    </tbody>
+</table>
+</body>
+
+</html>
